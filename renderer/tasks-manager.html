@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система управления заданиями</title>
+    <link rel="stylesheet" href="tasks-manager.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Заголовок -->
+        <header class="header">
+            <div class="header-content">
+                <h1>📋 Система управления заданиями</h1>
+                <div class="header-actions">
+                    <button class="btn btn-success" onclick="openCreateTaskModal()">
+                        ➕ Создать задание
+                    </button>
+                    <button class="btn btn-warning" onclick="openImportModal()">
+                        📊 Импорт Excel
+                    </button>
+                    <button class="btn btn-primary" onclick="showAllItems()">
+                        📦 Все позиции
+                    </button>
+                    <button class="btn btn-warning" onclick="showReceiving()">
+                        📥 Приемка
+                    </button>
+                    <button class="btn btn-secondary" onclick="showArchive()">
+                        🗂️ Архив
+                    </button>
+                    <button class="btn btn-info" onclick="refreshTasks()">
+                        🔄 Обновить
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Панель поиска и фильтров -->
+        <div class="search-panel">
+            <button class="search-toggle-btn" onclick="toggleFilters()">
+                🔍 Поиск и фильтры
+            </button>
+            <div class="filters-container" id="filtersContainer">
+                <div class="filter-group">
+                    <label>📊 Статус:</label>
+                    <select id="statusFilter" onchange="filterTasks()">
+                        <option value="">Все статусы</option>
+                        <option value="development">В разработке</option>
+                        <option value="sent">Отправлен</option>
+                        <option value="loaded">Загружен</option>
+                        <option value="in_progress">В работе</option>
+                        <option value="paused">Приостановлен</option>
+                        <option value="completed">Выполнен</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>⚡ Приоритет:</label>
+                    <select id="priorityFilter" onchange="filterTasks()">
+                        <option value="">Все приоритеты</option>
+                        <option value="low">Низкий</option>
+                        <option value="normal">Нормальный</option>
+                        <option value="important">Важный</option>
+                        <option value="urgent">Срочный</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>🔍 Поиск:</label>
+                    <input type="text" id="searchInput" placeholder="Поиск по названию, номеру задания или заказа..." onkeyup="filterTasks()">
+                </div>
+                <div class="filter-group">
+                    <label>📅 Период:</label>
+                    <select id="periodFilter" onchange="filterTasks()">
+                        <option value="">Все время</option>
+                        <option value="today">Сегодня</option>
+                        <option value="week">Эта неделя</option>
+                        <option value="month">Этот месяц</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Таблица заданий -->
+        <div class="table-container">
+            <table class="tasks-table" id="tasksTable">
+                <thead>
+                    <tr>
+                        <th class="col-task-id sortable" data-sort="taskNumber" onclick="sortTable('taskNumber')">
+                            № Задания <span class="sort-icon">↕️</span>
+                        </th>
+                        <th class="col-order-id sortable" data-sort="orderNumber" onclick="sortTable('orderNumber')">
+                            № Заказа <span class="sort-icon">↕️</span>
+                        </th>
+                        <th class="col-title sortable" data-sort="title" onclick="sortTable('title')">
+                            Название <span class="sort-icon">↕️</span>
+                        </th>
+                        <th class="col-priority sortable" data-sort="priority" onclick="sortTable('priority')">
+                            Приоритет <span class="sort-icon">↕️</span>
+                        </th>
+                        <th class="col-status sortable" data-sort="status" onclick="sortTable('status')">
+                            Статус <span class="sort-icon">↕️</span>
+                        </th>
+                        <th class="col-created sortable" data-sort="created" onclick="sortTable('created')">
+                            Создан <span class="sort-icon">↕️</span>
+                        </th>
+                        <th class="col-updated sortable" data-sort="updated" onclick="sortTable('updated')">
+                            Обновлен <span class="sort-icon">↕️</span>
+                        </th>
+                        <th class="col-progress sortable" data-sort="progress" onclick="sortTable('progress')">
+                            Прогресс <span class="sort-icon">↕️</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="tasksTableBody">
+                    <!-- Задания будут добавлены динамически -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Модальное окно создания задания -->
+        <div id="createTaskModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>➕ Создание нового задания</h2>
+                    <span class="close" onclick="closeModal('createTaskModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="createTaskForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>№ Задания</label>
+                                <input type="text" id="taskNumber" readonly placeholder="Автоматически...">
+                            </div>
+                            <div class="form-group">
+                                <label>№ Заказа *</label>
+                                <input type="text" id="orderNumber" required placeholder="2024/001" pattern="[0-9]{4}/[0-9]{3}" title="Формат: ГГГГ/ЧЧЧ" maxlength="8" oninput="formatOrderNumber(this)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Название задания *</label>
+                            <input type="text" id="taskTitle" required placeholder="Краткий комментарий задания">
+                        </div>
+                        <div class="form-group">
+                            <label>Описание</label>
+                            <textarea id="taskDescription" placeholder="Подробное описание задания"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Приоритет</label>
+                                <select id="taskPriority">
+                                    <option value="normal">Нормальный</option>
+                                    <option value="low">Низкий</option>
+                                    <option value="important">Важный</option>
+                                    <option value="urgent">Срочный</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Тип задания</label>
+                                <select id="taskType">
+                                    <option value="inventory">Инвентаризация</option>
+                                    <option value="receive">Приемка</option>
+                                    <option value="shipment">Отгрузка</option>
+                                    <option value="move">Перемещение</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Позиции задания</label>
+                            <div id="taskPositions">
+                                <button type="button" class="btn btn-outline" onclick="addPosition()">
+                                    ➕ Добавить позицию
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('createTaskModal')">Отмена</button>
+                    <button class="btn btn-success" onclick="createTask()">Создать задание</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно редактирования задания -->
+        <div id="editTaskModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h2>✏️ Редактирование задания</h2>
+                    <span class="close" onclick="closeModal('editTaskModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="tabs">
+                        <button class="tab-button active" onclick="openTab(event, 'editTab')">Основная информация</button>
+                        <button class="tab-button" onclick="openTab(event, 'historyTab')">История изменений</button>
+                        <button class="tab-button" onclick="openTab(event, 'progressTab')">Прогресс выполнения</button>
+                    </div>
+                    
+                    <div id="editTab" class="tab-content active">
+                        <form id="editTaskForm">
+                            <input type="hidden" id="editTaskId">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>№ Задания</label>
+                                    <input type="text" id="editTaskNumber" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>№ Заказа *</label>
+                                    <input type="text" id="editOrderNumber" required pattern="[0-9]{4}/[0-9]{3}" title="Формат: ГГГГ/ЧЧЧ">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Название задания *</label>
+                                <input type="text" id="editTaskTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Описание</label>
+                                <textarea id="editTaskDescription"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Приоритет</label>
+                                    <select id="editTaskPriority">
+                                        <option value="low">Низкий</option>
+                                        <option value="normal">Нормальный</option>
+                                        <option value="important">Важный</option>
+                                        <option value="urgent">Срочный</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Статус</label>
+                                    <select id="editTaskStatus">
+                                        <option value="development">В разработке</option>
+                                        <option value="sent">Отправлен</option>
+                                        <option value="loaded">Загружен</option>
+                                        <option value="in_progress">В работе</option>
+                                        <option value="paused">Приостановлен</option>
+                                        <option value="completed">Выполнен</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Комментарий к изменению</label>
+                                <textarea id="editComment" placeholder="Опишите причину изменения"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div id="historyTab" class="tab-content">
+                        <div id="changeHistory">
+                            <!-- История изменений будет загружена динамически -->
+                        </div>
+                    </div>
+                    
+                    <div id="progressTab" class="tab-content">
+                        <div id="taskProgress">
+                            <!-- Прогресс выполнения будет загружен динамически -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('editTaskModal')">Отмена</button>
+                    <button class="btn btn-info" onclick="openTaskReport(document.getElementById('editTaskId').value)">📊 Отчет</button>
+                    <button class="btn btn-warning" onclick="sendToTablet()">📱 Отправить на планшет</button>
+                    <button class="btn btn-danger" onclick="deleteTask(document.getElementById('editTaskId').value); closeModal('editTaskModal')">🗑️ Удалить</button>
+                    <button class="btn btn-success" onclick="saveTask()">💾 Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно импорта Excel -->
+        <div id="importModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h2>📊 Импорт Excel файла</h2>
+                    <span class="close" onclick="closeModal('importModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="import-section">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-content">
+                                <div class="upload-icon">📁</div>
+                                <h3>Перетащите Excel файл сюда</h3>
+                                <p>или</p>
+                                <button class="btn btn-info" onclick="document.getElementById('excelFile').click()">
+                                    Выберите файл
+                                </button>
+                                <input type="file" id="excelFile" accept=".xlsx" style="display: none;" onchange="handleFileSelect(event)">
+                                <div class="file-info">
+                                    <small>Поддерживаются только файлы .xlsx</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="import-preview" id="importPreview" style="display: none;">
+                            <h3>📋 Предварительный просмотр</h3>
+                            <div class="preview-info">
+                                <div class="form-group">
+                                    <label>Название задания:</label>
+                                    <input type="text" id="importTaskTitle" placeholder="Будет извлечено из A2">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>№ Задания:</label>
+                                        <input type="text" id="importTaskNumber" readonly style="background: #f8f9fa;">
+                                        <small style="color: #6c757d;">Присваивается автоматически</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>№ Заказа:</label>
+                                        <input type="text" id="importOrderNumber" placeholder="2024/001" pattern="[0-9]{4}/[0-9]{3}" maxlength="8" oninput="formatOrderNumber(this)">
+                                        <small style="color: #6c757d;">Формат: ГГГГ/ННН (год/номер)</small>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Приоритет:</label>
+                                        <select id="importPriority">
+                                            <option value="normal">Нормальный</option>
+                                            <option value="low">Низкий</option>
+                                            <option value="important">Важный</option>
+                                            <option value="urgent">Срочный</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Тип задания:</label>
+                                        <select id="importTaskType">
+                                            <option value="picking" selected>Комплектация</option>
+                                            <option value="shipment">Отгрузка</option>
+                                            <option value="writeoff">Списание</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="positions-preview">
+                                <h4>📦 Позиции из Excel файла:</h4>
+                                <div class="positions-table-container">
+                                    <table class="positions-table">
+                                        <thead>
+                                            <tr>
+                                                <th>№</th>
+                                                <th>Обозначение</th>
+                                                <th>Наименование</th>
+                                                <th>Количество</th>
+                                                <th>Действие</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="importPositionsBody">
+                                            <!-- Позиции будут добавлены динамически -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('importModal')">Отмена</button>
+                    <button class="btn btn-success" id="createFromImportBtn" onclick="createTaskFromImport()" style="display: none;">
+                        ✅ Создать задание
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно отчета по заданию -->
+        <div id="reportModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h2>📊 Полный отчет по заданию</h2>
+                    <span class="close" onclick="closeModal('reportModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="taskReport">
+                        <!-- Отчет будет загружен динамически -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('reportModal')">Закрыть</button>
+                    <button class="btn btn-info" onclick="exportReport()">📄 Экспорт отчета</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно приемки -->
+        <div id="receivingModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h2>📦 Приемка товаров</h2>
+                    <span class="close" onclick="closeModal('receivingModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <!-- Панель фильтров приемки -->
+                    <div class="receiving-filters" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <div class="filter-group">
+                            <label>📅 Дата приемки:</label>
+                            <input type="date" id="receivingDateFilter" onchange="filterReceivingItems()">
+                        </div>
+                        <div class="filter-group">
+                            <label>📋 Номер заказа:</label>
+                            <input type="text" id="receivingOrderFilter" placeholder="2024/001" onkeyup="filterReceivingItems()">
+                        </div>
+                        <div class="filter-group">
+                            <label>📊 Статус в НП:</label>
+                            <select id="receivingStatusFilter" onchange="filterReceivingItems()">
+                                <option value="">Все статусы</option>
+                                <option value="pending">Ожидает</option>
+                                <option value="approved">Одобрено</option>
+                                <option value="rejected">Отклонено</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>🔍 Поиск:</label>
+                            <input type="text" id="receivingSearchFilter" placeholder="Поиск по обозначению, наименованию..." onkeyup="filterReceivingItems()">
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопка добавления новой позиции приемки -->
+                    <div style="margin: 20px 0;">
+                        <button class="btn btn-success" onclick="openAddReceivingItemModal()">
+                            ➕ Добавить позицию приемки
+                        </button>
+                    </div>
+                    
+                    <!-- Таблица приемки -->
+                    <div class="table-container">
+                        <table class="tasks-table" id="receivingTable">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="date" onclick="sortReceivingTable('date')">
+                                        Дата <span class="sort-icon">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-sort="orderNumber" onclick="sortReceivingTable('orderNumber')">
+                                        № Заказа <span class="sort-icon">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-sort="designation" onclick="sortReceivingTable('designation')">
+                                        Обозначение <span class="sort-icon">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-sort="name" onclick="sortReceivingTable('name')">
+                                        Наименование <span class="sort-icon">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-sort="quantity" onclick="sortReceivingTable('quantity')">
+                                        Количество <span class="sort-icon">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-sort="routeCard" onclick="sortReceivingTable('routeCard')">
+                                        № Маршрутной карты <span class="sort-icon">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-sort="npStatus" onclick="sortReceivingTable('npStatus')">
+                                        Статус в НП <span class="sort-icon">↕️</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="receivingTableBody">
+                                <!-- Данные приемки будут добавлены динамически -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('receivingModal')">Закрыть</button>
+                    <button class="btn btn-warning" onclick="exportReceivingReport()">📑 Экспорт отчета</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно добавления позиции приемки -->
+        <div id="addReceivingItemModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>➕ Добавить позицию приемки</h2>
+                    <span class="close" onclick="closeModal('addReceivingItemModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="addReceivingItemForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Дата приемки *</label>
+                                <input type="date" id="receivingDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>№ Заказа *</label>
+                                <input type="text" id="receivingOrderNumber" required placeholder="2024/001" pattern="[0-9]{4}/[0-9]{3}" maxlength="8" oninput="formatOrderNumber(this)">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Обозначение *</label>
+                                <input type="text" id="receivingDesignation" required placeholder="НЗ.КШ.050.16.01.01М.100">
+                            </div>
+                            <div class="form-group">
+                                <label>Наименование *</label>
+                                <input type="text" id="receivingName" required placeholder="Седло клапана">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Количество *</label>
+                                <input type="number" id="receivingQuantity" required min="1" placeholder="10">
+                            </div>
+                            <div class="form-group">
+                                <label>№ Маршрутной карты</label>
+                                <input type="text" id="receivingRouteCard" placeholder="МК-2024-001">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Статус в НП</label>
+                            <select id="receivingNpStatus">
+                                <option value="pending">Ожидает</option>
+                                <option value="approved">Одобрено</option>
+                                <option value="rejected">Отклонено</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('addReceivingItemModal')">Отмена</button>
+                    <button class="btn btn-success" onclick="addReceivingItem()">Добавить</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="tasks-manager.js"></script>
+</body>
+</html> 

@@ -1,0 +1,540 @@
+/* SAP UI5 Fiori 3 (Quartz Light) Theme Configuration */
+
+/* Импорт SAP 72 шрифтов */
+@import url('https://ui5.sap.com/resources/sap/ui/core/themes/sap_fiori_3/fonts/72-web.css');
+
+/* CSS Custom Properties для SAP UI5 темы */
+:root {
+  /* SAP Brand Colors - Мягкие тона */
+  --sapBrandColor: #5a9fd4;
+  --sapHighlightColor: #5a9fd4;
+  --sapActiveColor: #4a8fc4;
+  --sapHoverColor: #6aafe4;
+  
+  /* SAP Base Colors */
+  --sapBaseColor: #ffffff;
+  --sapShellColor: #354a5f;
+  --sapBackgroundColor: #fafafa;
+  --sapGroupContentBackground: #ffffff;
+  
+  /* SAP Content Colors */
+  --sapTextColor: #32363a;
+  --sapLinkColor: #0070f2;
+  --sapCompanyLogo: none;
+  --sapBackgroundImage: none;
+  --sapBackgroundImageOpacity: 1.0;
+  --sapBackgroundImageRepeat: false;
+  
+  /* SAP Selection Colors */
+  --sapSelectedColor: #0070f2;
+  --sapSelectColor: #0070f2;
+  --sapHoverBackground: #ebf8ff;
+  
+  /* SAP Error Colors */
+  --sapErrorColor: #bb0000;
+  --sapErrorBackground: #ffebee;
+  --sapErrorBorderColor: #bb0000;
+  
+  /* SAP Warning Colors */
+  --sapWarningColor: #e78c07;
+  --sapWarningBackground: #fff8e1;
+  --sapWarningBorderColor: #e78c07;
+  
+  /* SAP Success Colors */
+  --sapSuccessColor: #107e3e;
+  --sapSuccessBackground: #e8f5e8;
+  --sapSuccessBorderColor: #107e3e;
+  
+  /* SAP Information Colors */
+  --sapInformationColor: #0070f2;
+  --sapInformationBackground: #e1f4ff;
+  --sapInformationBorderColor: #0070f2;
+  
+  /* SAP Neutral Colors */
+  --sapNeutralColor: #6a6d70;
+  --sapNeutralBackground: #f7f7f7;
+  --sapNeutralBorderColor: #d9d9d9;
+  
+  /* SAP Field Colors */
+  --sapField_Background: #ffffff;
+  --sapField_BorderColor: #89919a;
+  --sapField_HelpBackground: #ffffff;
+  --sapField_Hover_Background: #ebf8ff;
+  --sapField_Hover_BorderColor: #0070f2;
+  --sapField_Focus_Background: #ffffff;
+  --sapField_Focus_BorderColor: #0070f2;
+  --sapField_ReadOnly_Background: #f2f2f2;
+  --sapField_ReadOnly_BorderColor: #d9d9d9;
+  --sapField_RequiredColor: #ce2020;
+  
+  /* SAP Group Colors */
+  --sapGroup_TitleBorderColor: #d9d9d9;
+  --sapGroup_ContentBackground: #ffffff;
+  --sapGroup_ContentBorderColor: #d9d9d9;
+  --sapGroup_BorderWidth: 1px;
+  
+  /* SAP Toolbar Colors */
+  --sapToolbar_Background: #ffffff;
+  --sapToolbar_SeparatorColor: #d9d9d9;
+  
+  /* SAP List Colors */
+  --sapList_HeaderBackground: #f2f2f2;
+  --sapList_HeaderBorderColor: #d9d9d9;
+  --sapList_HeaderTextColor: #32363a;
+  --sapList_BorderColor: #e5e5e5;
+  --sapList_TextColor: #32363a;
+  --sapList_Background: #ffffff;
+  --sapList_Hover_Background: #f5f5f5;
+  --sapList_SelectionBackground: #ebf8ff;
+  --sapList_SelectionBorderColor: #0070f2;
+  
+  /* SAP Button Colors */
+  --sapButton_Background: #ffffff;
+  --sapButton_BorderColor: #0070f2;
+  --sapButton_TextColor: #0070f2;
+  --sapButton_Hover_Background: #ebf8ff;
+  --sapButton_Hover_BorderColor: #0064d9;
+  --sapButton_Hover_TextColor: #0064d9;
+  --sapButton_Active_Background: #0070f2;
+  --sapButton_Active_BorderColor: #0070f2;
+  --sapButton_Active_TextColor: #ffffff;
+  --sapButton_Emphasized_Background: #0070f2;
+  --sapButton_Emphasized_BorderColor: #0070f2;
+  --sapButton_Emphasized_TextColor: #ffffff;
+  --sapButton_Emphasized_Hover_Background: #0064d9;
+  --sapButton_Emphasized_Hover_BorderColor: #0064d9;
+  --sapButton_Reject_Background: #ffffff;
+  --sapButton_Reject_BorderColor: #bb0000;
+  --sapButton_Reject_TextColor: #bb0000;
+  --sapButton_Accept_Background: #ffffff;
+  --sapButton_Accept_BorderColor: #107e3e;
+  --sapButton_Accept_TextColor: #107e3e;
+  
+  /* Custom Warehouse App Colors - Мягкие тона */
+  --warehouse-primary: #5a9fd4;
+  --warehouse-secondary: #7a8fa3;
+  --warehouse-accent: #d4a574;
+  --warehouse-success: #7db46c;
+  --warehouse-warning: #d4a574;
+  --warehouse-error: #c07a7a;
+  --warehouse-info: #5a9fd4;
+  
+  /* Typography */
+  --sapFontFamily: '72', 'Helvetica Neue', Arial, sans-serif;
+  --sapFontSize: 0.875rem;
+  --sapFontLargeSize: 1rem;
+  --sapFontSmallSize: 0.75rem;
+  --sapFontHeader1Size: 2.25rem;
+  --sapFontHeader2Size: 1.5rem;
+  --sapFontHeader3Size: 1.25rem;
+  --sapFontHeader4Size: 1.125rem;
+  --sapFontHeader5Size: 1rem;
+  --sapFontHeader6Size: 0.875rem;
+  
+  /* Spacing */
+  --sapElement_LineHeight: 2.75rem;
+  --sapElement_Height: 2.25rem;
+  --sapElement_BorderWidth: 1px;
+  --sapElement_BorderCornerRadius: 0.375rem;
+  --sapField_BorderCornerRadius: 0.375rem;
+  --sapButton_BorderCornerRadius: 0.375rem;
+  
+  /* Shadows */
+  --sapContent_Shadow0: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  --sapContent_Shadow1: 0 2px 4px 0 rgba(0, 0, 0, 0.16);
+  --sapContent_Shadow2: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
+  --sapContent_Shadow3: 0 8px 16px 0 rgba(0, 0, 0, 0.16);
+  
+  /* UI5 Theme Customizations */
+  --sapShell_Background: #f7f7f7;
+  --sapShell_BorderColor: #d9d9d9;
+  --sapButton_Background: #0070f2;
+  --sapButton_BorderColor: #0070f2;
+  --sapButton_TextColor: #ffffff;
+  --sapButton_Hover_Background: #005fcc;
+  --sapHighlightColor: #0070f2;
+  --sapActiveColor: #0070f2;
+  --sapSelectedColor: #0070f2;
+  --sapContent_Shadow0: 0 0 0 1px rgba(0,0,0,0.1);
+  --sapContent_Shadow1: 0 2px 4px 0 rgba(0,0,0,0.1);
+  --sapContent_Shadow2: 0 4px 8px 0 rgba(0,0,0,0.1);
+}
+
+/* Глобальные стили для приложения */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--sapFontFamily);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--sapFontFamily);
+  font-size: var(--sapFontSize);
+  color: var(--sapTextColor);
+  background-color: var(--sapBackgroundColor);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Стили для ShellBar */
+ui5-shellbar {
+  --_ui5_shellbar_bg: var(--sapShellColor);
+  --_ui5_shellbar_button_color: #ffffff;
+  background: var(--sapShell_Background);
+  border-bottom: 1px solid var(--sapShell_BorderColor);
+  box-shadow: var(--sapContent_Shadow1);
+}
+
+.ui5-shellbar-logo {
+  font-weight: bold;
+  color: var(--sapHighlightColor);
+}
+
+/* Стили для Navigation */
+ui5-side-navigation {
+  --_ui5_side_navigation_item_hover_bg: var(--sapHoverBackground);
+  --_ui5_side_navigation_item_active_bg: var(--sapSelectedColor);
+  background: #fafafa;
+  border-right: 1px solid #d9d9d9;
+}
+
+.ui5-side-navigation-item {
+  padding: 0.75rem 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.ui5-side-navigation-item:hover {
+  background-color: #f0f8ff;
+}
+
+.ui5-side-navigation-item.selected {
+  background-color: var(--sapHighlightColor);
+  color: white;
+}
+
+/* Стили для кнопок */
+ui5-button {
+  --_ui5_button_base_border_radius: var(--sapButton_BorderCornerRadius);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+ui5-button[design="Emphasized"] {
+  --_ui5_button_emphasized_bg: var(--warehouse-primary);
+  --_ui5_button_emphasized_border_color: var(--warehouse-primary);
+}
+
+.ui5-button--emphasized {
+  background: var(--sapButton_Background);
+  border-color: var(--sapButton_BorderColor);
+  color: var(--sapButton_TextColor);
+}
+
+.ui5-button--emphasized:hover {
+  background: var(--sapButton_Hover_Background);
+}
+
+/* Стили для карточек */
+ui5-card {
+  --_ui5_card_border_radius: var(--sapElement_BorderCornerRadius);
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  box-shadow: var(--sapContent_Shadow1);
+  overflow: hidden;
+}
+
+.ui5-card-header {
+  background: #fafafa;
+  border-bottom: 1px solid #eaeaea;
+  padding: 1rem;
+}
+
+.ui5-card-content {
+  padding: 1rem;
+}
+
+/* Стили для таблиц */
+ui5-table {
+  --_ui5_table_header_bg: var(--sapList_HeaderBackground);
+  --_ui5_table_row_hover_bg: var(--sapList_Hover_Background);
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--sapContent_Shadow1);
+}
+
+.ui5-table-row:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.ui5-table-row:hover {
+  background-color: #f0f8ff;
+}
+
+.ui5-table-cell {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eaeaea;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  :root {
+    --sapFontSize: 1rem;
+    --sapElement_Height: 3rem;
+  }
+  .ui5-panel,
+  .ui5-card,
+  .ui5-table {
+    border-radius: 4px;
+    margin: 0.5rem 0;
+  }
+  
+  .ui5-table-cell {
+    padding: 0.5rem;
+  }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Утилитарные классы */
+.warehouse-primary {
+  color: var(--warehouse-primary) !important;
+}
+
+.warehouse-bg-primary {
+  background-color: var(--warehouse-primary) !important;
+}
+
+.warehouse-secondary {
+  color: var(--warehouse-secondary) !important;
+}
+
+.warehouse-bg-secondary {
+  background-color: var(--warehouse-secondary) !important;
+}
+
+.warehouse-success {
+  color: var(--warehouse-success) !important;
+}
+
+.warehouse-bg-success {
+  background-color: var(--warehouse-success) !important;
+}
+
+.warehouse-warning {
+  color: var(--warehouse-warning) !important;
+}
+
+.warehouse-bg-warning {
+  background-color: var(--warehouse-warning) !important;
+}
+
+.warehouse-error {
+  color: var(--warehouse-error) !important;
+}
+
+.warehouse-bg-error {
+  background-color: var(--warehouse-error) !important;
+}
+
+/* Spacing utilities */
+.p-1 { padding: 0.5rem !important; }
+.p-2 { padding: 1rem !important; }
+.p-3 { padding: 1.5rem !important; }
+.p-4 { padding: 2rem !important; }
+
+.m-1 { margin: 0.5rem !important; }
+.m-2 { margin: 1rem !important; }
+.m-3 { margin: 1.5rem !important; }
+.m-4 { margin: 2rem !important; }
+
+.mt-1 { margin-top: 0.5rem !important; }
+.mt-2 { margin-top: 1rem !important; }
+.mt-3 { margin-top: 1.5rem !important; }
+.mt-4 { margin-top: 2rem !important; }
+
+.mb-1 { margin-bottom: 0.5rem !important; }
+.mb-2 { margin-bottom: 1rem !important; }
+.mb-3 { margin-bottom: 1.5rem !important; }
+.mb-4 { margin-bottom: 2rem !important; }
+
+/* Text utilities */
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+
+.font-weight-bold { font-weight: bold !important; }
+.font-weight-normal { font-weight: normal !important; }
+
+/* Display utilities */
+.d-flex { display: flex !important; }
+.d-block { display: block !important; }
+.d-inline { display: inline !important; }
+.d-inline-block { display: inline-block !important; }
+.d-none { display: none !important; }
+
+/* Flex utilities */
+.flex-row { flex-direction: row !important; }
+.flex-column { flex-direction: column !important; }
+.justify-content-center { justify-content: center !important; }
+.justify-content-between { justify-content: space-between !important; }
+.align-items-center { align-items: center !important; }
+.flex-1 { flex: 1 !important; }
+
+/* Panel Customizations */
+.ui5-panel {
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  box-shadow: var(--sapContent_Shadow1);
+  margin-bottom: 1rem;
+}
+
+.ui5-panel-header {
+  background: #fafafa;
+  border-bottom: 1px solid #eaeaea;
+  font-weight: 600;
+}
+
+/* Form Customizations */
+.ui5-form-item {
+  margin-bottom: 1rem;
+}
+
+.ui5-label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.ui5-input {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  padding: 0.5rem;
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+.ui5-input:focus {
+  border-color: var(--sapHighlightColor);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 112, 242, 0.2);
+}
+
+/* Toast Messages */
+.ui5-toast {
+  border-radius: 4px;
+  box-shadow: var(--sapContent_Shadow2);
+}
+
+.ui5-toast--success {
+  background: #e8f5e8;
+  border-left: 4px solid #4caf50;
+  color: #2e7d32;
+}
+
+.ui5-toast--error {
+  background: #ffebee;
+  border-left: 4px solid #f44336;
+  color: #c62828;
+}
+
+.ui5-toast--warning {
+  background: #fff8e1;
+  border-left: 4px solid #ff9800;
+  color: #e65100;
+}
+
+.ui5-toast--info {
+  background: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  color: #1565c0;
+}
+
+/* Progress Indicators */
+.ui5-progress-indicator {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ui5-progress-indicator-bar {
+  background: linear-gradient(90deg, var(--sapHighlightColor), #40a9ff);
+  transition: width 0.3s ease;
+}
+
+/* Custom Warehouse Theme Extensions */
+.warehouse-dashboard {
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.warehouse-stats-card {
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.warehouse-stats-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--sapHighlightColor);
+  margin-bottom: 0.5rem;
+}
+
+.warehouse-stats-label {
+  font-size: 0.875rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.warehouse-status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.warehouse-status-indicator.online {
+  background: #4caf50;
+}
+
+.warehouse-status-indicator.offline {
+  background: #f44336;
+}
+
+.warehouse-status-indicator.processing {
+  background: #ff9800;
+}
+
+/* High contrast adjustments */
+@media (prefers-contrast: high) {
+  :root {
+    --sapButton_Background: #000000;
+    --sapButton_BorderColor: #000000;
+    --sapHighlightColor: #000000;
+  }
+  
+  .ui5-table-row:hover {
+    background-color: #ffffcc;
+  }
+} 
